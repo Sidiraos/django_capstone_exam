@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'restaurant',
+    'LittleLemonAPI',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser', 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +60,7 @@ ROOT_URLCONF = 'littlelemon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +72,13 @@ TEMPLATES = [
         },
     },
 ]
+# URL pour accéder aux fichiers statiques dans le navigateur
+STATIC_URL = 'restaurant/static/'
+
+# Répertoire où les fichiers statiques sont stockés, en plus de ceux des applications
+STATICFILES_DIRS = [
+    BASE_DIR / 'restaurant/static',  # Répertoire 'static' à la racine du projet
+]
 
 WSGI_APPLICATION = 'littlelemon.wsgi.application'
 
@@ -75,8 +88,15 @@ WSGI_APPLICATION = 'littlelemon.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'LittleLemon',
+        'USER': 'littlelemonadmin',
+        'PASSWORD': 'littleLemon@2025',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
@@ -121,3 +141,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # Authentification par session
+        'rest_framework.authentication.TokenAuthentication',  # Authentification par token
+      
+    ],
+}
+
+DJOSER={"USER_ID_FIELD":"username"}
